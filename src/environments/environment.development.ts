@@ -1,3 +1,3 @@
 export const environment = {
-  SPOONACULAR_API_KEY: '',
+    SPOONACULAR_API_KEY: ''
 };
