@@ -26,17 +26,28 @@ mat-card-actions{
 
 .containter{
     padding: 24px;
-    vertical-align: center;
-    
+    vertical-align: center;   
 }
 
-img{
+mat-card img{
     align-self: center;
     width: 90%;
     height: 200px;
-    object-fit: cover;
+    object-fit:cover;
     border-radius: 1.2rem ;
     
+}
+
+img.empty-search{
+  max-width: 600px;
+  width:100%;
+  height:auto;
+  align-self: center;
+  object-fit: cover;
+}
+
+.empty-search-container{
+  text-align: center;
 }
 
 .responsive-grid {

@@ -1,3 +1,4 @@
+@if(recipeCards().length > 0){
 <div class="container responsive-grid">
     <mat-card id={{recipeCard.id}} *ngFor="let recipeCard of recipeCards()">
         <mat-card-header>
@@ -57,3 +58,9 @@
         </mat-card-actions>
     </mat-card>
 </div>
+}
+@else{
+<div class="empty-search-container">
+    <img class="empty-search" src="../../assets/recipe-book.png">
+</div>
+}
