@@ -1,0 +1,7 @@
+<form class="recipe-search-form-container">
+    <mat-form-field class="recipe-search-form">
+        <mat-label>Search Recipe</mat-label>
+        <input  type="text" matInput [formControl]="queryFormControl" placeholder="Ex. Vegetarian Burger"
+            (keydown.enter)="onKeyDown()">
+    </mat-form-field>
+</form>

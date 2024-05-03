@@ -1,0 +1,88 @@
+
+mat-card{
+    border-radius: 1.2rem ;
+    transition: all 500ms ease;    
+}
+
+mat-card:hover {
+    background: rgba(lighten(#514843, 5%), 0.8);
+  border: solid 1px;
+  border-color: 'white';
+  transform: translateY(-0.5rem);
+}
+
+mat-card-header{
+  vertical-align: center;
+  justify-content: space-evenly;
+}
+
+mat-card-title{
+  text-align: center;
+}
+
+mat-card-actions{
+    justify-content: space-between;
+}
+
+.containter{
+    padding: 24px;
+    vertical-align: center;
+    
+}
+
+img{
+    align-self: center;
+    width: 90%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 1.2rem ;
+    
+}
+
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.attributes{
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.attributes  p{
+  margin:0;
+}
+
+// to highlight the numbers
+.attributes span{
+  color: #e0ac8e;
+  font-weight:500;
+}
+
+.text-overflow-clamp {
+    margin: 1em 0 1em 0;
+    width: 100%;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    display: -webkit-box;
+}
+
+// chips colors
+.vegetarian{
+  background-color: #388c42!important;
+}
+
+.vegan{
+  background-color: #246f2b !important;
+}
+
+.dairy-free{
+  background-color: #929188 !important ;
+}
+
+.gluten-free{
+  background-color: #a6845c !important;
+}

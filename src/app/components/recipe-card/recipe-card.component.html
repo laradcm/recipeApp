@@ -1,0 +1,59 @@
+<div class="container responsive-grid">
+    <mat-card id={{recipeCard.id}} *ngFor="let recipeCard of recipeCards()">
+        <mat-card-header>
+            <mat-card-title>{{ recipeCard.title }} </mat-card-title>
+            <mat-card-subtitle>
+                <mat-chip-listbox>
+                    @if(recipeCard.vegetarian){
+                    <mat-chip highlighted class="vegetarian">
+                        Vegetarian
+                    </mat-chip>}
+
+                    @if(recipeCard.vegan){
+                    <mat-chip highlighted class="vegan">
+                        Vegan
+                    </mat-chip>}
+                    @if(recipeCard.dairyFree){
+                    <mat-chip highlighted class="dairy-free">
+                        Dairy Free
+                    </mat-chip>}
+
+                    @if(recipeCard.glutenFree){
+                    <mat-chip highlighted class="gluten-free">
+                        Gluten Free
+                    </mat-chip>}
+                </mat-chip-listbox>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <br />
+        <img mat-card-image [src]="recipeCard.image" />
+        <mat-card-content>
+            <br>
+            <div class="attributes">
+                <div>
+                    <mat-icon class="material-symbols-outlined">access_time</mat-icon>
+                    <p><span>{{recipeCard.readyInMinutes}}</span> min</p>
+                </div>
+
+                <div>
+                    <mat-icon class="material-symbols-outlined">person</mat-icon>
+                    <p><span>{{recipeCard.servings}}</span> servings</p>
+                </div>
+            </div>
+            <!-- angular takes care of the html sanitation, I sanitized it before just in case -->
+            <p class="text-overflow-clamp" [innerHTML]="recipeCard.summary"></p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button color="accent" (click)="navigateToExternalURL(recipeCard.sourceUrl)">
+                VIEW RECIPE
+            </button>
+            <span>
+                <button mat-button disabled="true">
+                    <mat-icon color="accent" class="material-symbols-outlined pulse">favorite</mat-icon>
+                    <label class="button-label">{{recipeCard.aggregateLikes}}</label>
+                </button>
+            </span>
+        </mat-card-actions>
+    </mat-card>
+</div>
