@@ -15,7 +15,7 @@ export type RecipeType = {
   aggregateLikes: number;
   healthScore: number;
   creditsText: string;
-  license: string;
+  license?: string;
   sourceName: string;
   pricePerServing: number;
   id: number;
@@ -49,3 +49,10 @@ export type RecipeCardContentType = Pick<
   | 'sourceUrl'
   | 'aggregateLikes'
 >;
+
+export type RecipeSearchResponse = {
+  results: RecipeType[];
+  offset: number;
+  number: number;
+  totalResults: number;
+};

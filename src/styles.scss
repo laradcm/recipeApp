@@ -1,12 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
-// @import "@angular/material/prebuilt-themes/purple-green.css";
-@import "_themes.scss";
+@use '@angular/material' as mat;
+@use 'themes';
 
 html, body { height: 100%; }
 body { margin:0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+@include mat.core();
+//theme emitter
+@include mat.all-component-themes(themes.$dark-theme);
+
 ::selection {
-    background-color: #502724;
+    background-color: mat.get-color-from-palette(themes.$mat-primary-pallete, 200);
     color: white;
   }
+
+  
 

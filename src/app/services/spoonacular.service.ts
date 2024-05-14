@@ -16,10 +16,20 @@ export class SpoonacularService {
 
   fetchRecipes(query: string): void {
     const url = `https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&addRecipeNutrition=false&limitLicense=true&addWinePairing=false&addTasteData=false&number=5`; //i dont have moneys TT_TT
+
     const headers = new HttpHeaders().set('x-api-key', this.apiKey);
 
-    this.http.get(url, { headers }).subscribe((data: any) => {
-      this.recipesSubject.next(data.results);
+    this.http.get(url, { headers }).subscribe({
+      next: (data: any) => {
+        this.recipesSubject.next(data.results);
+      },
+      // TODO: fix service and component side to handle completed and error states
+      // error: (error) => {
+      //   this.recipesSubject.error(error);
+      // },
+      // complete: () => {
+      //   this.recipesSubject.complete();
+      // },
     });
   }
 }

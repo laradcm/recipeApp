@@ -1,3 +1,5 @@
+@use "sass:map";
+@use '@angular/material' as mat;
 
 mat-card{
     border-radius: 1.2rem ;
@@ -5,14 +7,14 @@ mat-card{
 }
 
 mat-card:hover {
-    background: rgba(lighten(#514843, 5%), 0.8);
+  background: rgba(lighten(#514843, 5%), 0.8);
   border: solid 1px;
   border-color: 'white';
   transform: translateY(-0.5rem);
 }
 
 mat-card-header{
-  vertical-align: center;
+  flex: 1;
   justify-content: space-evenly;
 }
 
@@ -21,12 +23,7 @@ mat-card-title{
 }
 
 mat-card-actions{
-    justify-content: space-between;
-}
-
-.containter{
-    padding: 24px;
-    vertical-align: center;   
+  justify-content: space-between;
 }
 
 mat-card img{
@@ -34,8 +31,7 @@ mat-card img{
     width: 90%;
     height: 200px;
     object-fit:cover;
-    border-radius: 1.2rem ;
-    
+    border-radius: 1.2rem ;    
 }
 
 img.empty-search{
@@ -50,10 +46,17 @@ img.empty-search{
   text-align: center;
 }
 
-.responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
     gap: 24px;
+    justify-content: center;
+}
+
+.flex-container mat-card{
+  flex: 1 1 340px;
+  max-width: 400px;
+  padding: 10px;
 }
 
 .attributes{
@@ -72,6 +75,8 @@ img.empty-search{
   font-weight:500;
 }
 
+//to truncate the summary text
+//TODO: create a pipe that calculates size of the component instead
 .text-overflow-clamp {
     margin: 1em 0 1em 0;
     width: 100%;
@@ -96,4 +101,19 @@ img.empty-search{
 
 .gluten-free{
   background-color: #a6845c !important;
+}
+
+.chip-plus{
+  background-color: #929188!important;
+}
+
+// minimum height for chip list in case none render
+mat-chip-listbox{
+  justify-content: center;
+  min-height: 40px;
+}
+
+.chips-container{
+  display: flex;
+  justify-content: center;
 }
