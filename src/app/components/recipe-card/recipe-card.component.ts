@@ -14,7 +14,6 @@ import { RecipeCardContentType, RecipeType } from '../../models/card.model';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SpoonacularService } from '../../services/spoonacular.service';
 import { SearchTriggerService } from '../../services/search-trigger.service';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -44,20 +43,35 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   animations: [],
 })
 export class RecipeCardComponent {
-  // private triggerSubscription: Subscription | undefined;
-  private triggerSubscription: Subscription | undefined;
+  private subscriptions: Subscription[] = [];
   recipeCards = signal<RecipeCardContentType[]>([]);
 
   constructor(
     private sanitizer: DomSanitizer,
-    private spoonacularService: SpoonacularService,
     private searchTriggerService: SearchTriggerService,
     private snackBar: MatSnackBar
   ) {
     //to react to the search component trigger action
-    this.triggerSubscription =  this.searchTriggerService.action$.subscribe(() => {
-      this.subscribeToRecipeService();
-    });
+    this.subscriptions.push(
+      this.searchTriggerService.action$.subscribe({
+        next: (recipes) => {
+          if (recipes.length > 0) {
+            this.updateRecipeCards(recipes);
+          } else {
+            this.openSnackBar('No Recipes Found', 'close');
+          }
+        },
+      })
+    );
+
+    this.subscriptions.push(
+      this.searchTriggerService.error$.subscribe({
+        next: (error) => {
+          console.error('Error in RecipeCardComponent:', error);
+          this.openSnackBar(`${error}`, 'Close');
+        },
+      })
+    );
   }
 
   navigateToExternalURL(externalURL: string) {
@@ -72,54 +86,32 @@ export class RecipeCardComponent {
     });
   }
 
-  subscribeToRecipeService(): void {
-    this.spoonacularService.recipes$.subscribe({
-      next: (recipes) => {
-        const recipeCards: RecipeCardContentType[] = recipes.map(
-          (recipe: RecipeType) => ({
-            id: recipe.id,
-            title: recipe.title,
-            vegetarian: recipe.vegetarian,
-            vegan: recipe.vegan,
-            glutenFree: recipe.glutenFree,
-            dairyFree: recipe.dairyFree,
-            image: recipe.image,
-            readyInMinutes: recipe.readyInMinutes,
-            servings: recipe.servings,
-            summary:
-              this.sanitizer.sanitize(SecurityContext.HTML, recipe.summary) ||
-              '',
-            sourceUrl:
-              this.sanitizer.sanitize(SecurityContext.URL, recipe.sourceUrl) ||
-              '',
-            aggregateLikes: recipe.aggregateLikes,
-          })
-        );
-        this.recipeCards.set(recipeCards);
-      },
-      // TODO: fix service and component side to handle completed and error states
-      // error: (error) => {
-      //   console.log(error.message);
-      //   this.openSnackBar(
-      //     `Error trying to fetch recipes ${error.error.message}`,
-      //     'close'
-      //   );
-      // },
-      // complete: () => {
-      //   if (this.recipeCards.length === 0) {
-      //     this.openSnackBar(`No Recipes Found`, 'close');
-      //   }
-      // },
-    });
+  updateRecipeCards(recipes: any[]) {
+    const recipeCards: RecipeCardContentType[] = recipes.map(
+      (recipe: RecipeType) => ({
+        id: recipe.id,
+        title: recipe.title,
+        vegetarian: recipe.vegetarian,
+        vegan: recipe.vegan,
+        glutenFree: recipe.glutenFree,
+        dairyFree: recipe.dairyFree,
+        image: recipe.image,
+        readyInMinutes: recipe.readyInMinutes,
+        servings: recipe.servings,
+        summary:
+          this.sanitizer.sanitize(SecurityContext.HTML, recipe.summary) || '',
+        sourceUrl:
+          this.sanitizer.sanitize(SecurityContext.URL, recipe.sourceUrl) || '',
+        aggregateLikes: recipe.aggregateLikes,
+      })
+    );
+    this.recipeCards.set(recipeCards);
   }
 
   ngOnDestroy(): void {
     //subscription could be undefined if no request was sent, in that case, do not call the unsubscribe method
-    // if (this.triggerSubscription) {
-    //   this.triggerSubscription.unsubscribe();
-    // }
-    if (this.triggerSubscription) {
-      this.triggerSubscription.unsubscribe();
+    if (this.subscriptions.length) {
+      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
   }
 }

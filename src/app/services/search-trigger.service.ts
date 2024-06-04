@@ -2,13 +2,19 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchTriggerService {
-  private actionSource = new Subject<void>();
-  action$ = this.actionSource.asObservable();
+  private actionSubject = new Subject<any>();
+  private errorSubject = new Subject<any>();
+  action$ = this.actionSubject.asObservable();
+  error$ = this.errorSubject.asObservable();
 
-  triggerAction() {
-    this.actionSource.next();
+  triggerAction(recipes: any[], error?: any) {
+    if (error) {
+      this.errorSubject.next(error);
+    } else {
+      this.actionSubject.next(recipes);
+    }
   }
 }

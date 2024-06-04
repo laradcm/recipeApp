@@ -17,7 +17,7 @@ import { SearchTriggerService } from '../../services/search-trigger.service';
   templateUrl: './recipe-search-box.component.html',
   styleUrl: './recipe-search-box.component.scss',
 })
-export class RecipeSearchBoxComponent{
+export class RecipeSearchBoxComponent {
   queryFormControl = new FormControl('');
 
   constructor(
@@ -26,8 +26,14 @@ export class RecipeSearchBoxComponent{
   ) {}
 
   onKeyDown() {
-    this.spoonacularService.fetchRecipes(this.queryFormControl.value || '');
-    this.searchTriggerService.triggerAction();
+    const query = this.queryFormControl.value || '';
+    this.spoonacularService.fetchRecipes(query).subscribe({
+      next: (recipes) => {
+        this.searchTriggerService.triggerAction(recipes);
+      },
+      error: (error) => {
+        this.searchTriggerService.triggerAction([], error); // trigger with empty results and error message
+      },
+    });
   }
-
 }
